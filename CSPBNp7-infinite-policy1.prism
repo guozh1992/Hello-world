@@ -1,0 +1,156 @@
+dtmc
+const int c=0;
+
+formula   f11=u*(1-x2);
+formula   f12=x1;
+
+formula   f21=(1-x1)*x3;
+formula   f22=x2;
+
+formula   f31=u+x2-u*x2;
+formula   f32=x3;
+
+formula    f41=(1-x5);
+
+formula   f51=x4*(1-u);
+
+formula   f61=(1-x2)*u;
+
+
+formula   state=mod(x1+x2+x3+x4+x5+x6,2);
+
+
+module  switch
+s:[0..1] ;
+[csPBN]c=0->0.3:(s'=1)+0.7:(s'=0);
+endmodule
+
+
+module  pert1
+per1:[0..1] ;
+[csPBN] c=0->0.9:(per1'=0)+0.1:(per1'=1);
+endmodule
+
+module   BN1
+x1:[0..1] ;
+d1:[0..1] ;
+[csPBN]c=0&s=1&per1=0&state=0&u=0->0.5:(x1'=f11)&(d1'=0)+0.5:(x1'=f12)&(d1'=1);
+[csPBN]c=0&s=1&per1=0&state=1&u=1->0.5:(x1'=f11)&(d1'=0)+0.5:(x1'=f12)&(d1'=1);
+
+[csPBN]c=0&s=0&per1=0&d1=0&state=0&u=0->(x1'=f11);
+[csPBN]c=0&s=0&per1=0&d1=0&state=1&u=1->(x1'=f11);
+
+[csPBN]((state=0&u=1)|(state=1&u=0))&per1=0->(x1'=x1);
+
+[csPBN]c=0&s=0&per1=0&d1=1->(x1'=f12);
+[csPBN]c=0&x1=1&per1=1->(x1'=0);
+[csPBN]c=0&x1=0&per1=1->(x1'=1);
+endmodule
+
+module  pert2
+per2:[0..1] ;
+[csPBN] c=0->0.9:(per2'=0)+0.1:(per2'=1);
+endmodule
+
+module BN2
+x2:[0..1] ;
+d2:[0..1] ;
+[csPBN] c=0&s=1&per2=0&state=0&u=0->0.5:(x2'=f21)&(d2'=0)+0.5:(x2'=f22)&(d2'=1);
+[csPBN] c=0&s=1&per2=0&state=1&u=1->0.5:(x2'=f21)&(d2'=0)+0.5:(x2'=f22)&(d2'=1);
+
+
+[csPBN]c=0&s=0&per2=0&d2=0&state=0&u=0->(x2'=f21);
+[csPBN]c=0&s=0&per2=0&d2=0&state=1&u=1->(x2'=f21);
+
+[csPBN]((state=0&u=1)|(state=1&u=0))&per2=0->(x2'=x2);
+
+[csPBN]c=0&s=0&per2=0&d2=1->(x2'=f22);
+[csPBN]c=0&x2=0&per2=1->(x2'=1);
+[csPBN]c=0&x2=1&per2=1->(x2'=0);
+endmodule
+
+module  pert3
+per3:[0..1];
+[csPBN] c=0->0.9:(per3'=0)+0.1:(per3'=1);
+endmodule
+
+module BN3
+x3:[0..1] ;
+d3:[0..1] ;
+[csPBN]c=0&s=1&per3=0&state=0&u=0->0.5:(x3'=f31)&(d3'=0)+0.5:(x3'=f32)&(d3'=1);
+[csPBN]c=0&s=1&per3=0&state=1&u=1->0.5:(x3'=f31)&(d3'=0)+0.5:(x3'=f32)&(d3'=1);
+
+[csPBN]c=0&s=0&per3=0&d3=0&state=0&u=0->(x3'=f31);
+[csPBN]c=0&s=0&per3=0&d3=0&state=1&u=1->(x3'=f31);
+
+[csPBN]((state=0&u=1)|(state=1&u=0))&per3=0->(x3'=x3);
+
+[csPBN]c=0&s=0&per3=0&d3=1->(x3'=f32);
+[csPBN]c=0&x3=1&per3=1->(x3'=0);
+[csPBN]c=0&x3=0&per3=1->(x3'=1);
+endmodule
+
+module  pert4
+per4:[0..1];
+[csPBN] c=0->0.9:(per4'=0)+0.1:(per4'=1);
+endmodule
+
+module  BN4
+x4:[0..1] ;
+[csPBN]per4=0&state=0&u=0->(x4'=f41);
+[csPBN]per4=0&state=1&u=1->(x4'=f41);
+[csPBN]((state=0&u=1)|(state=1&u=0))&per4=0->(x4'=x4);
+[csPBN]x4=1&per4=1->(x4'=0);
+[csPBN]x4=0&per4=1->(x4'=1);
+endmodule
+
+module  pert5
+per5:[0..1];
+[csPBN] c=0->0.9:(per5'=0)+0.1:(per5'=1);
+endmodule
+
+module  BN5
+x5:[0..1] ;
+[csPBN]per5=0&state=0&u=0->(x5'=f51);
+[csPBN]per5=0&state=1&u=1->(x5'=f51);
+[csPBN]((state=0&u=1)|(state=1&u=0))&per5=0->(x5'=x5);
+[csPBN]x5=1&per5=1->(x5'=0);
+[csPBN]x5=0&per5=1->(x5'=1);
+endmodule
+
+module  pert6
+per6:[0..1];
+[csPBN] c=0->0.9:(per6'=0)+0.1:(per6'=1);
+endmodule
+
+module  BN6
+x6:[0..1] ;
+[csPBN]per6=0&state=0&u=0->(x6'=f61);
+[csPBN]per6=0&state=1&u=1->(x6'=f61);
+[csPBN]((state=0&u=1)|(state=1&u=0))&per6=0->(x6'=x6);
+[csPBN]x6=1&per6=1->(x6'=0);
+[csPBN]x6=0&per6=1->(x6'=1);
+endmodule
+
+
+module   input
+u:[0..1];
+[csPBN](state=0&u=0)|(state=1&u=1)->(u'=u);
+[csPBN]((state=0&u=1)|(state=1&u=0))->(u'=1-u);
+endmodule
+
+
+init 
+s=0&x1=0&x2=0&x3=1&d1=0&d2=0&d3=0&per1=0&per2=0&per3=0&u=0&x4=1&x5=1&x6=1&per4=0&per5=0&per6=0
+endinit
+
+rewards  "cost"
+(x1=1&x2=0)&u=0:0;
+(x1=1&x2=0)&u=1:1;
+((x1=0&x2=0)|(x1=1&x2=1))&u=0:5;
+((x1=0&x2=0)|(x1=1&x2=1))&u=1:6;
+(x1=0&x2=1)&u=0:10;
+(x1=0&x2=1)&u=1:11;
+endrewards
+
+
